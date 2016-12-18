@@ -116,7 +116,7 @@ function turtleminer.rotate(player, pos, direction)
 		-- calculate param2
 		local rotationPart = node.param2 % 32 -- get first 4 bits
 		local preservePart = node.param2 - rotationPart
-		local axisdir = math.floor(rotationPart / 4)
+		local axisdir  = math.floor(rotationPart / 4)
 		local rotation = rotationPart - axisdir * 4
 		local x = rotation + 1
 		if x > 3 then x = 0 end -- calculate x
@@ -130,7 +130,7 @@ function turtleminer.rotate(player, pos, direction)
 		-- calculate param2
 		local rotationPart = node.param2 % 32 -- get first 4 bits
 		local preservePart = node.param2 - rotationPart
-		local axisdir = math.floor(rotationPart / 4)
+		local axisdir  = math.floor(rotationPart / 4)
 		local rotation = rotationPart - axisdir * 4
 		local x = rotation - 1
 		if x < 0 then x = 3 end -- calculate x
@@ -147,8 +147,8 @@ end
 function turtleminer.move(owner, pos, direction)
 	local oldmeta = minetest.get_meta(pos):to_table()
 	local node = minetest.get_node(pos)
-	local dir = minetest.facedir_to_dir(node.param2)
-	local new_pos = vector.new(pos)
+	local dir  = minetest.facedir_to_dir(node.param2)
+	local new_pos    = vector.new(pos)
 	local entity_pos = vector.new(pos)
 
 	if direction == "forward" or direction == "f" then
@@ -205,7 +205,7 @@ end
 -- [function] dig
 function turtleminer.dig(owner, pos, where)
 	local node = minetest.get_node(pos)
-	local dir = minetest.facedir_to_dir(node.param2)
+	local dir  = minetest.facedir_to_dir(node.param2)
 	local dig_pos = vector.new(pos)
 
 	if where == "front" then
@@ -213,10 +213,12 @@ function turtleminer.dig(owner, pos, where)
 		dig_pos.x = dig_pos.x - dir.x
 	elseif where == "below" then
 		dig_pos.y = dig_pos.y - 1
+	elseif where == "above" then		--HJG
+		dig_pos.y = dig_pos.y + 1
 	end
 
 	if minetest.get_node_or_nil(dig_pos) and turtleminer.is_breakable(dig_pos) then
-		minetest.set_node(dig_pos, { name = "air" })
+		minetest.set_node(dig_pos, { name = "air" })  -- Todo: put into inventory
 		nodeupdate(dig_pos)
 		return dig_pos
 	end
@@ -225,7 +227,7 @@ end
 -- [function] build
 function turtleminer.build(owner, pos, where)
 	local node = minetest.get_node(pos)
-	local dir = minetest.facedir_to_dir(node.param2)
+	local dir  = minetest.facedir_to_dir(node.param2)
 	local build_pos = vector.new(pos)
 
 	if where == "front" then
@@ -237,7 +239,7 @@ function turtleminer.build(owner, pos, where)
 
 	local def = minetest.registered_nodes[minetest.get_node(pos).name]
 	if not def or def.buildable_to then
-		minetest.set_node(dig_pos, { name = "dirt" })
+		minetest.set_node(dig_pos, { name = "default:dirt" })
 		nodeupdate(dig_pos)
 		return dig_pos
 	end

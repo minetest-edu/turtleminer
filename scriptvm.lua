@@ -2,38 +2,43 @@ local function parse_statement(line, lineno)
 	if line == "left" or line == "turn left" then
 		return {
 			command = "rotate",
-			params = "left"
+			params  = "left"
 		}
 	elseif line == "right" or line == "turn right" then
 		return {
 			command = "rotate",
-			params = "right"
+			params  = "right"
 		}
 	elseif line == "forward" or line == "backward"
 			or line == "up" or line == "down" then
 		return {
 			command = "move",
-			params = line
+			params  = line
 		}
 	elseif line == "build" or line == "place front" then
 		return {
 			command = "build",
-			params = "front"
+			params  = "front"
 		}
 	elseif line == "place below" then
 		return {
 			command = "build",
-			params = "below"
+			params  = "below"
 		}
 	elseif line == "dig" or line == "dig front" then
 		return {
 			command = "dig",
-			params = "front"
+			params  = "front"
 		}
 	elseif line == "dig below" then
 		return {
 			command = "dig",
-			params = "below"
+			params  = "below"
+		}
+	elseif line == "dig above" then  --HJG
+		return {
+			command = "dig",
+			params  = "above"
 		}
 	else
 		return nil
