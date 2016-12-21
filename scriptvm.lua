@@ -10,7 +10,9 @@ local function parse_statement(line, lineno)
 			params  = "right"
 		}
 	elseif line == "forward" or line == "backward"
-			or line == "up" or line == "down" then
+			or line == "f"  or line == "b"     --HJG
+			or line == "up" or line == "down"
+			or line == "u"  or line == "d" then
 		return {
 			command = "move",
 			params  = line
@@ -51,6 +53,7 @@ function turtleminer.build_script(owner, t_id, source)
 	local lineno = 1
 	for _, line in pairs(lines) do
 		line = line:trim()
+		if string.sub(line,1,2) == "--" then line = "" end  -- ignore lines with comment
 		if line ~= "" then
 			local res = parse_statement(line, lineno)
 			if res then
