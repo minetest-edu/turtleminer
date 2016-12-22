@@ -67,7 +67,7 @@ minetest.register_on_player_receive_fields(function(sender, formname, fields)
 	end
 	local pos = turtle.pos
 
-	local meta = minetest.get_meta(pos)
+	local meta  = minetest.get_meta(pos)
 	local tname = fields.name
 	if (fields.submit_name or fields.key_enter_field == "name")
 			and tname and tname ~= "" then
@@ -112,7 +112,7 @@ function turtleminer.rotate(player, pos, direction)
 	local ndef = minetest.registered_nodes[node.name] -- get node def
 
 	-- if direction is right, rotate right
-	if direction == "right" then
+	if direction == "right" or direction == "r" or direction == ">" then  --HJG
 		-- calculate param2
 		local rotationPart = node.param2 % 32 -- get first 4 bits
 		local preservePart = node.param2 - rotationPart
@@ -126,7 +126,9 @@ function turtleminer.rotate(player, pos, direction)
 		node.param2 = new_param2 -- set new param2
 		minetest.swap_node(pos, node) -- swap node
 		return pos
-	elseif direction == "left" then -- elseif direction is left, rotate left
+	-- elseif direction is left, rotate left
+	elseif direction == "left" or direction == "l" or direction == "<" then  --HJG
+
 		-- calculate param2
 		local rotationPart = node.param2 % 32 -- get first 4 bits
 		local preservePart = node.param2 - rotationPart
@@ -171,9 +173,9 @@ function turtleminer.move(owner, pos, direction)
 
 	local def = minetest.registered_nodes[minetest.get_node(new_pos).name]
 	if not def.walkable then
-		local t_id = oldmeta.fields.t_id
+		local t_id   = oldmeta.fields.t_id
 		local turtle = turtles[t_id]
-		turtle.pos = new_pos
+		turtle.pos   = new_pos
 		turtleminer.save()
 		minetest.remove_node(pos)
 		minetest.set_node(new_pos, node)
@@ -274,9 +276,9 @@ function turtleminer.register_turtle(turtlestring, def)
 			turtle_id_counter = turtle_id_counter + 1
 			local t_id = "t_" .. turtle_id_counter
 			turtles[t_id] = {
-				pos = pos,
+				pos   = pos,
 				owner = name,
-				name = nil
+				name  = nil
 			}
 			turtleminer.save()
 
