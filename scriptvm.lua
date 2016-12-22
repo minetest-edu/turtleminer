@@ -1,16 +1,18 @@
 local function parse_statement(line, lineno)
-	if line == "left" or line == "turn left" then
+	if line == "left" or line == "turn left" 
+			or line == "l" or line == "<" then 	--HJG
 		return {
 			command = "rotate",
 			params  = "left"
 		}
-	elseif line == "right" or line == "turn right" then
+	elseif line == "right" or line == "turn right" 
+			or line == "r" or line == ">" then 	--HJG
 		return {
 			command = "rotate",
 			params  = "right"
 		}
 	elseif line == "forward" or line == "backward"
-			or line == "f"  or line == "b"     --HJG
+			or line == "f"  or line == "b"    	--HJG
 			or line == "up" or line == "down"
 			or line == "u"  or line == "d" then
 		return {
